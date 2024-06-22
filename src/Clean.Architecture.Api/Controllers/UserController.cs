@@ -46,14 +46,14 @@ namespace Clean.Architecture.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<User> Get(Guid id)
+        public async Task<User> Get(string id)
         {
             var user = await _userRepository.GetAsync(id);
             return user;
         }
 
         [HttpDelete("{id}")]
-        public async Task<bool> Delete(Guid id)
+        public async Task<bool> Delete(string id)
         {
             var result = await _userRepository.RemoveAsync(id);
             return result;

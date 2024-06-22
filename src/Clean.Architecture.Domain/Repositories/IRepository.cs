@@ -1,5 +1,5 @@
 ﻿
-using Clean.Architecture.Domain.DataBase;
+using Clean.Architecture.Domain.Entities.Base;
 using System.Linq.Expressions;
 
 namespace Clean.Architecture.Domain.Repositories
@@ -9,9 +9,9 @@ namespace Clean.Architecture.Domain.Repositories
         Task CreateAsync(T entity);
         Task<List<T>> GetAllAsync();
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>> filter);
-        Task<T> GetAsync(Guid id);
+        Task<T> GetAsync(string id);
         Task<T> GetAsync(Expression<Func<T, bool>> filter);
         Task UpdateAsync(T entity);
-        Task<bool> RemoveAsync(Guid id);
+        Task<bool> RemoveAsync(string id);
     }
 }

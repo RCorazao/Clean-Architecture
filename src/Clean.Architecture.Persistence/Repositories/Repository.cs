@@ -1,7 +1,8 @@
 ﻿
-using Clean.Architecture.Domain.DataBase;
+using Clean.Architecture.Domain.Entities.Base;
 using Clean.Architecture.Domain.Repositories;
 using Clean.Architecture.Persistence.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
@@ -20,6 +21,7 @@ namespace Clean.Architecture.Persistence.Repositories
 
         public async Task CreateAsync(T entity)
         {
+            entity.Id = ObjectId.GenerateNewId().ToString();
             await _collection.InsertOneAsync(entity);
         }
 
@@ -33,7 +35,7 @@ namespace Clean.Architecture.Persistence.Repositories
             return await _collection.Find(filter).ToListAsync();
         }
 
-        public async Task<T> GetAsync(Guid id)
+        public async Task<T> GetAsync(string id)
         {
             return await _collection.Find(e => e.Id == id).FirstOrDefaultAsync();
         }
@@ -48,7 +50,7 @@ namespace Clean.Architecture.Persistence.Repositories
             await _collection.ReplaceOneAsync(e => e.Id == entity.Id, entity);
         }
 
-        public async Task<bool> RemoveAsync(Guid id)
+        public async Task<bool> RemoveAsync(string id)
         {
             var result = await _collection.DeleteOneAsync(e => e.Id == id);
             return result.IsAcknowledged && result.DeletedCount > 0;

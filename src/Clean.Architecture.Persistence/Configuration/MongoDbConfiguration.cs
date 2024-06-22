@@ -1,6 +1,6 @@
 ﻿
 using Clean.Architecture.Application.Settings;
-using Clean.Architecture.Domain.DataBase;
+using Clean.Architecture.Domain.Entities.Base;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
