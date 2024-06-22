@@ -1,5 +1,7 @@
 using Clean.Architecture.Application.Settings;
+using Clean.Architecture.Domain.Repositories;
 using Clean.Architecture.Persistence.Configuration;
+using Clean.Architecture.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,9 @@ builder.Services.AddSwaggerGen();
 // MongoDB configuration
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
 builder.Services.AddSingleton<MongoDbConfiguration>();
+
+// Register generic repositories
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 

@@ -1,7 +1,9 @@
 ﻿using Clean.Architecture.Domain.DataBase;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Clean.Architecture.Domain.Entities
 {
+    [Table("users")]
     public class User : IEntity
     {
         public Guid Id { get; set; }
