@@ -1,11 +1,12 @@
-﻿using Clean.Architecture.Domain.Entities;
+﻿using Clean.Architecture.Application.Features;
+using Clean.Architecture.Domain.Entities;
 using Clean.Architecture.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clean.Architecture.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("users")]
     public class UserController : ControllerBase
     {
 
@@ -24,7 +25,7 @@ namespace Clean.Architecture.Api.Controllers
         // Test Endpoints - Using User Entity only for test
 
         [HttpPost()]
-        public async Task<User> Create(string name, string email, string password)
+        public async Task<IActionResult> Create(string name, string email, string password)
         {
             var user = new User
             {
@@ -35,28 +36,32 @@ namespace Clean.Architecture.Api.Controllers
 
             await _userRepository.CreateAsync(user);
 
-            return user;
+            return StatusCode(StatusCodes.Status201Created,
+                ResponseApiService.Response(StatusCodes.Status201Created, user));
         }
 
         [HttpGet()]
-        public async Task<List<User>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             var users = await _userRepository.GetAllAsync();
-            return users;
+            return StatusCode(StatusCodes.Status200OK,
+                ResponseApiService.Response(StatusCodes.Status200OK, users));
         }
 
         [HttpGet("{id}")]
-        public async Task<User> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
             var user = await _userRepository.GetAsync(id);
-            return user;
+            return StatusCode(StatusCodes.Status200OK,
+                ResponseApiService.Response(StatusCodes.Status200OK, user));
         }
 
         [HttpDelete("{id}")]
-        public async Task<bool> Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             var result = await _userRepository.RemoveAsync(id);
-            return result;
+            return StatusCode(StatusCodes.Status200OK,
+                ResponseApiService.Response(StatusCodes.Status200OK, message: "Record deleted"));
         }
     }
 }
