@@ -23,12 +23,12 @@ namespace Clean.Architecture.Persistence.Repositories
             await _collection.InsertOneAsync(entity);
         }
 
-        public async Task<IReadOnlyCollection<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync()
         {
             return await _collection.Find(_ => true).ToListAsync();
         }
 
-        public async Task<IReadOnlyCollection<T>> GetAllAsync(Expression<Func<T, bool>> filter)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> filter)
         {
             return await _collection.Find(filter).ToListAsync();
         }
@@ -48,9 +48,10 @@ namespace Clean.Architecture.Persistence.Repositories
             await _collection.ReplaceOneAsync(e => e.Id == entity.Id, entity);
         }
 
-        public async Task RemoveAsync(Guid id)
+        public async Task<bool> RemoveAsync(Guid id)
         {
-            await _collection.DeleteOneAsync(e => e.Id == id);
+            var result = await _collection.DeleteOneAsync(e => e.Id == id);
+            return result.IsAcknowledged && result.DeletedCount > 0;
         }
     }
 }
